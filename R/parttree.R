@@ -33,7 +33,7 @@
 #' library("partykit")
 #' ct <- ctree(Species ~ Petal.Length + Petal.Width, data = iris)
 #' parttree(ct)
-#' 
+#'
 #' ## rpart via partykit
 #' rp2 <- as.party(rp)
 #' parttree(rp2)
@@ -82,7 +82,7 @@ parttree.rpart =
           # pd$var = gsub("[[:punct:]].+", "", pv) ## Causes problems when punctuation mark in name, so use below
           pd$var = gsub("<.+|<=.+|>.+|>=.+", "", pv)
           # pd$split = gsub(".+[[:punct:]]", "", pv) ## Use below since we want to keep - and . in split values (e.g. -2.5)
-          pd$split = as.numeric(gsub(".+[^[:alnum:]\\-\\.\\s]", "", pv))
+          pd$split <- as.numeric(gsub(".+<|.+<=|>|.+>=", "", pv))
           pd$side = gsub("\\w|\\.", "", pv)
           pd$yvals = yvals[nodes==node]
           return(pd)
@@ -190,7 +190,7 @@ parttree.constparty =
         }
       }
       paths = add_ids(1L)
-    
+
       ## augment splits with interval and label information
       augment_split = function(s) {
         if(length(s) > 0L) {
@@ -211,7 +211,7 @@ parttree.constparty =
           int[, -2L + 2L * s$varid] = brk[s$index + 1L]
           s$intervals = int
         }
-        return(s)      
+        return(s)
       }
       splits = lapply(splits, augment_split)
 
